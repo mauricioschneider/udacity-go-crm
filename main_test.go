@@ -32,6 +32,31 @@ func TestGetCustomersHandler(t *testing.T) {
 	}
 }
 
+// Tests getting a customer that exists
+func TestGetExistingCustomerHandler(t *testing.T) {
+	req, err := http.NewRequest("GET", "/customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(getCustomer)
+	handler.ServeHTTP(rr, req)
+
+	// Checks for 200 status code
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("getCustomers returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	// Checks for JSON response
+	if ctype := rr.Header().Get("Content-Type"); ctype != "application/json" {
+		t.Errorf("Content-Type does not match: got %v want %v",
+			ctype, "application/json")
+	}
+}
+
 // Tests happy path of submitting a well-formed POST /customers request
 func TestAddCustomerHandler(t *testing.T) {
 	requestBody := strings.NewReader(`
@@ -69,7 +94,7 @@ func TestAddCustomerHandler(t *testing.T) {
 
 // Tests unhappy path of deleting a user that doesn't exist
 func TestDeleteCustomerHandler(t *testing.T) {
-	req, err := http.NewRequest("DELETE", "/customers/e7847fee-3a0e-455e-b151-519bdb9851c7", nil)
+	req, err := http.NewRequest("DELETE", "/customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669", nil)
 
 	if err != nil {
 		t.Fatal(err)
@@ -88,7 +113,7 @@ func TestDeleteCustomerHandler(t *testing.T) {
 
 // Tests unhappy path of getting a user that doesn't exist
 func TestGetCustomerHandler(t *testing.T) {
-	req, err := http.NewRequest("GET", "/customers/e7847fee-3a0e-455e-b151-519bdb9851c7", nil)
+	req, err := http.NewRequest("GET", "/customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669", nil)
 
 	if err != nil {
 		t.Fatal(err)
