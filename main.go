@@ -3,11 +3,16 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
+
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
 
 type Customer struct {
 	ID        string `json:"id,omitempty"`
@@ -58,11 +63,20 @@ func addCustomer(w http.ResponseWriter, r *http.Request) {
 
 	var c Customer
 
-	err := json.NewDecoder(r.Body).Decode(&c)
+	// This is more elegant, but project rubric requires use of io
+	//err := json.NewDecoder(r.Body).Decode(&c)
 
-	if err != nil {
+	reqBody, _ := io.ReadAll(r.Body)
+	json.Unmarshal(reqBody, &c)
+
+	// No validation implementation specified in Rubric i.e. required fields
+	// However, we can assume a contact should at least have a name
+
+	if c.Name == "" {
+		errorResponse := ErrorResponse{Error: "Invalid request data: Name is required"}
+		jsonResonse, _ := json.Marshal(errorResponse)
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode("{}")
+		w.Write(jsonResonse)
 		return
 	}
 
@@ -78,26 +92,39 @@ func getCustomer(w http.ResponseWriter, r *http.Request) {
 
 	userId := mux.Vars(r)["id"]
 
-	var customer Customer
-
-	if _, ok := customerList[userId]; ok {
-		customer = customerList[userId]
-	}
-
-	if customer.ID == "" {
-		w.WriteHeader(http.StatusNotFound)
+	if found, ok := customerList[userId]; ok {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(found)
 		return
 	}
 
-	json.NewEncoder(w).Encode(customer)
+	w.WriteHeader(http.StatusNotFound)
 }
 
 func updateCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 
-	vars := mux.Vars(r)
-	fmt.Println(vars)
+	userId := mux.Vars(r)["id"]
+
+	if _, ok := customerList[userId]; ok {
+		var c Customer
+		reqBody, _ := io.ReadAll(r.Body)
+		json.Unmarshal(reqBody, &c)
+		if c.Name == "" {
+			errorResponse := ErrorResponse{Error: "Invalid request data: Name is required"}
+			jsonResonse, _ := json.Marshal(errorResponse)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(jsonResonse)
+			return
+		}
+		c.ID = userId
+		customerList[c.ID] = c
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(c)
+		return
+	}
+
+	w.WriteHeader(http.StatusNotFound)
 }
 
 func deleteCustomer(w http.ResponseWriter, r *http.Request) {

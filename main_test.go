@@ -5,6 +5,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/gorilla/mux"
 )
 
 // Tests happy path of submitting a well-formed GET /customers request
@@ -16,8 +18,9 @@ func TestGetCustomersHandler(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(getCustomers)
-	handler.ServeHTTP(rr, req)
+	router := mux.NewRouter()
+	router.HandleFunc("/customers", getCustomers).Methods("GET")
+	router.ServeHTTP(rr, req)
 
 	// Checks for 200 status code
 	if status := rr.Code; status != http.StatusOK {
@@ -34,19 +37,20 @@ func TestGetCustomersHandler(t *testing.T) {
 
 // Tests getting a customer that exists
 func TestGetExistingCustomerHandler(t *testing.T) {
-	req, err := http.NewRequest("GET", "/customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669", nil)
+	req, err := http.NewRequest("GET", "/customers/fb871ddf-ad69-40b9-966d-ab8e29504438", nil)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(getCustomer)
-	handler.ServeHTTP(rr, req)
+	router := mux.NewRouter()
+	router.HandleFunc("/customers/{id}", getCustomer).Methods("GET")
+	router.ServeHTTP(rr, req)
 
 	// Checks for 200 status code
 	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("getCustomers returned wrong status code: got %v want %v",
+		t.Errorf("getCustomers with ID returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
 
@@ -76,8 +80,9 @@ func TestAddCustomerHandler(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(addCustomer)
-	handler.ServeHTTP(rr, req)
+	router := mux.NewRouter()
+	router.HandleFunc("/customers", addCustomer).Methods("POST")
+	router.ServeHTTP(rr, req)
 
 	// Checks for 201 status code
 	if status := rr.Code; status != http.StatusCreated {
@@ -92,17 +97,54 @@ func TestAddCustomerHandler(t *testing.T) {
 	}
 }
 
-// Tests unhappy path of deleting a user that doesn't exist
-func TestDeleteCustomerHandler(t *testing.T) {
-	req, err := http.NewRequest("DELETE", "/customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669", nil)
+// Tests happy path of submitting a well-formed PUT /customers request
+func TestUpdateCustomerHandler(t *testing.T) {
+	requestBody := strings.NewReader(`
+		{
+			"name": "New Example Name",
+			"role": "Example Role",
+			"email": "Example Email",
+			"phone": 5550199,
+			"contacted": true
+		}
+	`)
+
+	req, err := http.NewRequest("PUT", "/customers/fb871ddf-ad69-40b9-966d-ab8e29504438", requestBody)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(deleteCustomer)
-	handler.ServeHTTP(rr, req)
+	router := mux.NewRouter()
+	router.HandleFunc("/customers/{id}", updateCustomer).Methods("PUT")
+	router.ServeHTTP(rr, req)
+
+	// Checks for 200 status code
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("addCustomer returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	// Checks for JSON response
+	if ctype := rr.Header().Get("Content-Type"); ctype != "application/json" {
+		t.Errorf("Content-Type does not match: got %v want %v",
+			ctype, "application/json")
+	}
+}
+
+// Tests unhappy path of deleting a user that doesn't exist
+func TestDeleteCustomerHandler(t *testing.T) {
+	req, err := http.NewRequest("DELETE", "/customers/non-existent", nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	router := mux.NewRouter()
+	router.HandleFunc("/customers/{id}", deleteCustomer).Methods("DELETE")
+	router.ServeHTTP(rr, req)
 
 	// Checks for 404 status code
 	if status := rr.Code; status != http.StatusNotFound {
@@ -113,15 +155,16 @@ func TestDeleteCustomerHandler(t *testing.T) {
 
 // Tests unhappy path of getting a user that doesn't exist
 func TestGetCustomerHandler(t *testing.T) {
-	req, err := http.NewRequest("GET", "/customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669", nil)
+	req, err := http.NewRequest("GET", "/customers/non-existent", nil)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(getCustomer)
-	handler.ServeHTTP(rr, req)
+	router := mux.NewRouter()
+	router.HandleFunc("/customers/{id}", getCustomer).Methods("GET")
+	router.ServeHTTP(rr, req)
 
 	// Checks for 404 status code
 	if status := rr.Code; status != http.StatusNotFound {
