@@ -25,7 +25,7 @@ var customerList = []Customer{
 		Name:      "Clementina DuBuque",
 		Role:      "CEO",
 		Email:     "Rey.Padberg@karina.biz",
-		Phone:     "024-648-3804",
+		Phone:     "(024)648-3804",
 		Contacted: true,
 	},
 	{
@@ -33,7 +33,7 @@ var customerList = []Customer{
 		Name:      "Glenna Reichert",
 		Role:      "Software Engineer",
 		Email:     "Chaim_McDermott@dana.io",
-		Phone:     "(775)976-6794 x41206",
+		Phone:     "(775)976-6794",
 		Contacted: false,
 	},
 	{
@@ -41,7 +41,7 @@ var customerList = []Customer{
 		Name:      "Nicholas Runolfsdottir V",
 		Role:      "Security Analyst",
 		Email:     "Sherwood@rosamond.me",
-		Phone:     "586.493.6943 x140",
+		Phone:     "(586)493-6943",
 		Contacted: true,
 	},
 }
@@ -60,7 +60,24 @@ func addCustomer(w http.ResponseWriter, r *http.Request) {
 
 func getCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+
+	userId := mux.Vars(r)["id"]
+
+	var customer Customer
+
+	for _, c := range customerList {
+		if c.ID == userId {
+			customer = c
+			break
+		}
+	}
+
+	if customer.ID == "" {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	json.NewEncoder(w).Encode(customer)
 }
 
 func updateCustomer(w http.ResponseWriter, r *http.Request) {
