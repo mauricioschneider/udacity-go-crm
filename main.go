@@ -139,12 +139,19 @@ func deleteCustomer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNotFound)
-	json.NewEncoder(w).Encode("{}")
+}
+
+func showAPIDocumentation(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+
+	http.ServeFile(w, r, "./static/index.html")
 }
 
 func main() {
 
 	router := mux.NewRouter()
+
+	router.HandleFunc("/", showAPIDocumentation).Methods("GET")
 	router.HandleFunc("/customers", getCustomers).Methods("GET")
 	router.HandleFunc("/customers", addCustomer).Methods("POST")
 	router.HandleFunc("/customers/{id}", getCustomer).Methods("GET")

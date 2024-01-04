@@ -1,0 +1,741 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Go CRM API</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="51361dbd-17de-4263-bccf-bcd9979cb11a" class="page sans"><header><h1 class="page-title">Go CRM API</h1><p class="page-description"></p></header><div class="page-body"><nav id="4278570a-05bb-4481-9cd0-7070ed1659b4" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#5a44add0-385f-45e0-b0bf-09dacbc5bbb4">Description</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#d3ebf47b-fbc0-482f-8c8e-21fbb0b9216d">Base URL</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#23f08c8b-4589-484b-b5f1-e943d59cf57c">Endpoints</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#e43288b1-f5fb-4e1b-ae47-d3268d93ad14"><code>GET /customers</code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#26e744c3-2be0-4637-8740-8bfe2d52940c">Response</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#071e7fce-9cc4-40fa-a1d2-7bcbd6afed0e">Example</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#d48f5ca3-5927-41ea-8c5b-7d8e1eaba999">Errors</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#07a16543-4728-4457-aade-b9a301b8ead1"><code>GET /customers/{customer_id}</code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#4819b825-1be1-4d7c-8f02-4b60c8e7f130">Response</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#8e9a42c2-753d-45c2-a770-8b7f2cfdfb3d">Example</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#fbe37ee1-108e-4ddd-9d3d-a0ee4d446ed2">Errors</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#947c4e05-1ce4-44d8-ab88-f82cf6c5150a"><code>POST /customers</code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#0cd6f729-3eca-4075-b595-247332e70b68">Response</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#5180bac2-c6f8-44b6-af73-afc8a383d8be">Example</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#b399bb11-70ec-4546-869d-df2693e928ac">Errors</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#cc8496d9-4a40-472c-bf5d-8242bad9f334"><code>PUT /customers/{customer_id}</code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#e79a6bf1-e252-400a-acf9-10ce36d58259">Response</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#28df44bb-ea58-45bf-a6a8-904e80431da5">Example</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#6264887e-ab8f-486f-bad9-36282e28486c">Errors</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#6b791e5a-660f-404f-9b26-75334a87bcff"><code>DELETE /customers/{customer_id}</code></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#224f24ff-3ba0-4f74-a83c-d48a8b6b316d">Response</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#7fb950ad-2587-4abe-9c15-21ff24329da5">Example</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#7d920ee9-49a5-4d34-a783-290bda881e7d">Errors</a></div></nav><h1 id="5a44add0-385f-45e0-b0bf-09dacbc5bbb4" class="">Description</h1><p id="13ae65b6-aeb4-4288-a318-a4840a85bbeb" class="">This is an API that manages contacts</p><h1 id="d3ebf47b-fbc0-482f-8c8e-21fbb0b9216d" class="">Base URL</h1><p id="8d27a397-da78-4d23-8aea-d9d81b1bf0ba" class="">When running the API locally, the base URL for all API requests is:</p><p id="d50f7857-c975-4e25-9362-5647bedcaabf" class=""><code>https://localhost:8000</code></p><h1 id="23f08c8b-4589-484b-b5f1-e943d59cf57c" class="">Endpoints</h1><h2 id="e43288b1-f5fb-4e1b-ae47-d3268d93ad14" class=""><code>GET /customers</code></h2><p id="de3765d9-99c9-41df-aef6-9ba5d1a8b712" class="">Returns a list of all customers</p><h3 id="26e744c3-2be0-4637-8740-8bfe2d52940c" class="">Response</h3><p id="13f64d18-5c6f-4253-9183-24503fbb58dd" class="">Returns a <code>200 OK</code> response, and a JSON array of objects with the following properties:</p><ul id="8a2abb97-b5ce-4a22-a5ae-d50a500683a6" class="bulleted-list"><li style="list-style-type:disc"><code>id</code>: String. The unique identifier of the customer.</li></ul><ul id="cb0d10d6-202a-4975-a8cd-3a5ae578ba00" class="bulleted-list"><li style="list-style-type:disc"><code>name</code>: String. The name of the customer.</li></ul><ul id="e75ce35f-db87-46da-936c-09c6c3c1fe70" class="bulleted-list"><li style="list-style-type:disc"><code>role</code>: String. The role of the customer.</li></ul><ul id="cc678854-8784-4d64-a107-bf417ef47cc1" class="bulleted-list"><li style="list-style-type:disc"><code>email</code>: String. The email of the customer</li></ul><ul id="bb9cd51e-a58b-482f-8176-716db1f7bc10" class="bulleted-list"><li style="list-style-type:disc"><code>phone</code>: String. The phone of the customer</li></ul><ul id="6d4db107-fd3a-4bde-abf9-f553c9505644" class="bulleted-list"><li style="list-style-type:disc"><code>contacted</code>: Boolean. If the customer has been contacted or not</li></ul><h3 id="071e7fce-9cc4-40fa-a1d2-7bcbd6afed0e" class="">Example</h3><p id="4704fe68-002b-4922-a735-f3bc796ca957" class="">Request:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1cee2649-82da-4e32-9123-9f5522f34e31" class="code code-wrap"><code class="language-Plain Text">GET /customers</code></pre><p id="8b197854-e2dc-4c7b-9937-733242042ff5" class="">Response:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c71b11bb-5a95-40e8-9c5e-ffe2853c7dfa" class="code code-wrap"><code class="language-JSON">{
+  &quot;17b0f3c0-7148-4e7a-8b91-71c22ca1105c&quot;: {
+    &quot;name&quot;: &quot;Nicholas Runolfsdottir V&quot;,
+    &quot;role&quot;: &quot;Security Analyst&quot;,
+    &quot;email&quot;: &quot;Sherwood@rosamond.me&quot;,
+    &quot;phone&quot;: &quot;(586)493-6943&quot;,
+    &quot;contacted&quot;: true
+  },
+  &quot;e1827a7d-1acd-46ef-9d92-2a4d78bd7669&quot;: {
+    &quot;id&quot;: &quot;e1827a7d-1acd-46ef-9d92-2a4d78bd7669&quot;,
+    &quot;name&quot;: &quot;Clementina DuBuque&quot;,
+    &quot;role&quot;: &quot;CEO&quot;,
+    &quot;email&quot;: &quot;Rey.Padberg@karina.biz&quot;,
+    &quot;phone&quot;: &quot;(024)648-3804&quot;,
+    &quot;contacted&quot;: true
+  },
+  &quot;fb871ddf-ad69-40b9-966d-ab8e29504438&quot;: {
+    &quot;id&quot;: &quot;fb871ddf-ad69-40b9-966d-ab8e29504438&quot;,
+    &quot;name&quot;: &quot;Glenna Reichert&quot;,
+    &quot;role&quot;: &quot;Software Engineer&quot;,
+    &quot;email&quot;: &quot;Chaim_McDermott@dana.io&quot;,
+    &quot;phone&quot;: &quot;(775)976-6794&quot;
+  }
+}</code></pre><h3 id="d48f5ca3-5927-41ea-8c5b-7d8e1eaba999" class="">Errors</h3><p id="81762dd4-cb6b-4c52-8f8a-c6499b739a29" class="">This endpoint doesn’t return any error codes</p><h2 id="07a16543-4728-4457-aade-b9a301b8ead1" class=""><code>GET /customers/{customer_id}</code></h2><p id="b4f65cf4-e02f-4bc8-bc9f-adb49427b5c3" class="">Returns a specific customer</p><h3 id="4819b825-1be1-4d7c-8f02-4b60c8e7f130" class="">Response</h3><p id="56cba954-d2bb-4f5d-94c4-3014050ec870" class="">Returns a <code>200 OK</code> response,  and a JSON object with the following properties:</p><ul id="bf1b032b-4039-479a-bf5c-dd9598d88fe4" class="bulleted-list"><li style="list-style-type:disc"><code>id</code>: String. The unique identifier of the customer.</li></ul><ul id="aec67b40-5510-4908-b80a-85077792d740" class="bulleted-list"><li style="list-style-type:disc"><code>name</code>: String. The name of the customer.</li></ul><ul id="a9d18060-76ba-4b2c-9e58-c3133425e649" class="bulleted-list"><li style="list-style-type:disc"><code>role</code>: String. The role of the customer.</li></ul><ul id="a5f8a9c5-e228-46c4-a681-0d3feb1fe340" class="bulleted-list"><li style="list-style-type:disc"><code>email</code>: String. The email of the customer</li></ul><ul id="07d7df70-8dff-46f3-9ae9-47fa2672c00c" class="bulleted-list"><li style="list-style-type:disc"><code>phone</code>: String. The phone of the customer</li></ul><ul id="c5483668-364c-4fac-9c41-f26934dcc25f" class="bulleted-list"><li style="list-style-type:disc"><code>contacted</code>: Boolean. If the customer has been contacted or not</li></ul><h3 id="8e9a42c2-753d-45c2-a770-8b7f2cfdfb3d" class="">Example</h3><p id="2ee28b6e-6564-4bb9-bcd5-61f39b7ec8b1" class="">Request:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b23942a7-0944-4a55-9e3a-d94758e2cb45" class="code code-wrap"><code class="language-Plain Text">GET /customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669</code></pre><p id="6ca6a685-239b-4faf-92e2-19398a3e46fe" class="">Response:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d618df3d-73b7-4941-b506-3a171a3ab16a" class="code code-wrap"><code class="language-JSON">{
+  &quot;id&quot;: &quot;e1827a7d-1acd-46ef-9d92-2a4d78bd7669&quot;,
+  &quot;name&quot;: &quot;Clementina DuBuque&quot;,
+  &quot;role&quot;: &quot;CEO&quot;,
+  &quot;email&quot;: &quot;Rey.Padberg@karina.biz&quot;,
+  &quot;phone&quot;: &quot;(024)648-3804&quot;,
+  &quot;contacted&quot;: true
+}</code></pre><h2 id="fbe37ee1-108e-4ddd-9d3d-a0ee4d446ed2" class="">Errors</h2><p id="d3138e09-f984-4084-95ed-a928bd0928da" class="">This endpoint uses the following error codes:</p><ul id="03f8ecdd-a6b0-4c3e-9f19-a1792d66afea" class="bulleted-list"><li style="list-style-type:disc"><code>404 Not Found</code>: The requested customer was not found.</li></ul><h2 id="947c4e05-1ce4-44d8-ab88-f82cf6c5150a" class=""><code>POST /customers</code></h2><p id="6399ad53-11ae-4df2-a666-9e1d31020db4" class="">Creates a customer and adds it to the customer list</p><h3 id="0cd6f729-3eca-4075-b595-247332e70b68" class="">Response</h3><p id="71c6e801-645e-4206-8e73-40d0a855cd35" class="">Returns a <code>201 Created</code> response,  and a JSON object with the following properties:</p><ul id="84687150-9b6e-4ab5-ab68-4d8a6d7dee8a" class="bulleted-list"><li style="list-style-type:disc"><code>id</code>: String. The unique identifier of the customer.</li></ul><ul id="020fa74b-29af-4e49-aeb4-a7d114e566d8" class="bulleted-list"><li style="list-style-type:disc"><code>name</code>: String. The name of the customer.</li></ul><ul id="5d513a80-9e4b-4877-ad29-9a3c1be51c80" class="bulleted-list"><li style="list-style-type:disc"><code>role</code>: String. The role of the customer.</li></ul><ul id="d13fb998-550c-4c10-8976-1f0a9dc0eb4d" class="bulleted-list"><li style="list-style-type:disc"><code>email</code>: String. The email of the customer</li></ul><ul id="36c0f88c-c193-4333-ae1e-b3cc57c04654" class="bulleted-list"><li style="list-style-type:disc"><code>phone</code>: String. The phone of the customer</li></ul><ul id="55069930-9b87-4fe5-8a0d-77264ac72a4d" class="bulleted-list"><li style="list-style-type:disc"><code>contacted</code>: Boolean. If the customer has been contacted or not</li></ul><h3 id="5180bac2-c6f8-44b6-af73-afc8a383d8be" class="">Example</h3><p id="48a35b0d-005b-49a6-a270-6c2e1def4363" class="">Request:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="410960ff-b7eb-41dc-bd53-e988c8566aed" class="code code-wrap"><code class="language-JSON">POST /customers
+
+Body:
+{
+  &quot;name&quot;: &quot;John Dorian, MD&quot;, // Required
+  &quot;role&quot;: &quot;Resident&quot;,
+  &quot;email&quot;: &quot;john@dorian.md&quot;,
+  &quot;phone&quot;: &quot;(532)746-3955&quot;,
+  &quot;contacted&quot;: true
+}</code></pre><p id="88668e16-b4f2-4b00-87d7-6f2b82c9bd26" class="">Response:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="3a0bf53c-5251-491e-9b9d-7dd6b16a8865" class="code code-wrap"><code class="language-JSON">
+{
+	&quot;id&quot;: &quot;e1827a7d-1acd-46ef-9d92-2a4d78bd7669&quot;,
+  &quot;name&quot;: &quot;John Dorian, MD&quot;, // Required
+  &quot;role&quot;: &quot;Resident&quot;,
+  &quot;email&quot;: &quot;john@dorian.md&quot;,
+  &quot;phone&quot;: &quot;(532)746-3955&quot;,
+  &quot;contacted&quot;: true
+}</code></pre><h2 id="b399bb11-70ec-4546-869d-df2693e928ac" class="">Errors</h2><p id="3e0a0832-f199-4fff-af63-1b10e93c6af9" class="">This endpoint uses the following error codes:</p><ul id="7677efa4-fdce-47dd-a278-774bbb376f77" class="bulleted-list"><li style="list-style-type:disc"><code>400 Bad Request</code>: When name is empty</li></ul><h2 id="cc8496d9-4a40-472c-bf5d-8242bad9f334" class=""><code>PUT /customers/{customer_id}</code></h2><p id="8e7e4ea3-532e-4484-9b14-1bd618eb9fa0" class="">Returns a specific customer</p><h3 id="e79a6bf1-e252-400a-acf9-10ce36d58259" class="">Response</h3><p id="bc9ff261-05b0-4ab0-975e-d27aa0ea4ecf" class="">Returns a <code>200 OK</code> response, and a JSON object with the following properties:</p><ul id="3130ada3-096d-4999-b49b-4a86323c5832" class="bulleted-list"><li style="list-style-type:disc"><code>id</code>: String. The unique identifier of the customer.</li></ul><ul id="0bf22fa2-10a5-4e2f-a5fe-b20f656741f0" class="bulleted-list"><li style="list-style-type:disc"><code>name</code>: String. The name of the customer.</li></ul><ul id="8cfe73c3-e141-4165-9498-eed5f5e66238" class="bulleted-list"><li style="list-style-type:disc"><code>role</code>: String. The role of the customer.</li></ul><ul id="ee28120f-239e-41f4-bbb1-c5737be5f526" class="bulleted-list"><li style="list-style-type:disc"><code>email</code>: String. The email of the customer</li></ul><ul id="dfaf1d1d-2fed-4443-97ed-6cb66ca4d4a3" class="bulleted-list"><li style="list-style-type:disc"><code>phone</code>: String. The phone of the customer</li></ul><ul id="9acebbdd-4c46-4b19-b82e-276d3211eeda" class="bulleted-list"><li style="list-style-type:disc"><code>contacted</code>: Boolean. If the customer has been contacted or not</li></ul><h3 id="28df44bb-ea58-45bf-a6a8-904e80431da5" class="">Example</h3><p id="271eb437-e387-4588-93a3-fcccc1a704bb" class="">Request:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b6e792ea-687c-4350-bc8e-9a1b3f570f54" class="code code-wrap"><code class="language-JSON">POST /customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669
+
+Body:
+{
+  &quot;id&quot;: &quot;e1827a7d-1acd-46ef-9d92-2a4d78bd7669&quot;,
+  &quot;name&quot;: &quot;Clementina DuBuque&quot;,
+  &quot;role&quot;: &quot;CEO&quot;,
+  &quot;email&quot;: &quot;Rey.Padberg@karina.biz&quot;,
+  &quot;phone&quot;: &quot;(024)648-3804&quot;,
+  &quot;contacted&quot;: true
+}</code></pre><p id="9336beff-047b-4932-acf5-9de6daec2c9c" class="">Response:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="348abcc9-edea-4839-a3b3-8394cdfcf834" class="code code-wrap"><code class="language-JSON">{
+  &quot;id&quot;: &quot;e1827a7d-1acd-46ef-9d92-2a4d78bd7669&quot;,
+  &quot;name&quot;: &quot;Clementina DuBuque&quot;,
+  &quot;role&quot;: &quot;CEO&quot;,
+  &quot;email&quot;: &quot;Rey.Padberg@karina.biz&quot;,
+  &quot;phone&quot;: &quot;(024)648-3804&quot;,
+  &quot;contacted&quot;: true
+}</code></pre><h2 id="6264887e-ab8f-486f-bad9-36282e28486c" class="">Errors</h2><p id="6d244779-5504-47c6-b57b-6a13d78037e9" class="">This endpoint uses the following error codes:</p><ul id="f45cd2c1-bca9-4fbc-8061-47f6808c0431" class="bulleted-list"><li style="list-style-type:disc"><code>404 Not Found</code>: The requested customer to be updated was not found.</li></ul><ul id="ec979ed4-76b1-4b80-ae11-a85c51e3fc61" class="bulleted-list"><li style="list-style-type:disc"><code>400 Bad Request</code>: The request body didn’t include name, or name is empty.</li></ul><h2 id="6b791e5a-660f-404f-9b26-75334a87bcff" class=""><code>DELETE /customers/{customer_id}</code></h2><p id="99882a23-91e1-47f3-931f-973ed73a537a" class="">Returns a specific customer</p><h3 id="224f24ff-3ba0-4f74-a83c-d48a8b6b316d" class="">Response</h3><p id="adc2123d-46ac-4d0f-a9e7-efe2327f5a5b" class="">After a successful deletion, and empty response with <code>204 No Content</code> status code is returned</p><h3 id="7fb950ad-2587-4abe-9c15-21ff24329da5" class="">Example</h3><p id="348c4cf9-592f-4f8d-a9b3-21052340802d" class="">Request:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="3b178e50-616f-4c60-aeea-3c03833d37bc" class="code code-wrap"><code class="language-Plain Text">DELETE /customers/e1827a7d-1acd-46ef-9d92-2a4d78bd7669</code></pre><p id="466d87a7-893b-4e4e-b513-a3afefe745ae" class="">Response:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c452bfb4-0453-4bc6-8675-e620cabaec1b" class="code code-wrap"><code class="language-JSON">&quot;&quot;</code></pre><h2 id="7d920ee9-49a5-4d34-a783-290bda881e7d" class="">Errors</h2><p id="d589bfb8-b044-4a7c-9b97-f1f1329eb0e6" class="">This endpoint uses the following error codes:</p><ul id="76a688d7-9e9a-4d7f-b30b-fd6446cdd4ba" class="bulleted-list"><li style="list-style-type:disc"><code>404 Not Found</code>: The requested customer to be deleted was not found.</li></ul><p id="a3033c36-8126-4672-b0c3-0ca27b65639e" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
