@@ -6,6 +6,16 @@ meta {
 
 post {
   url: {{baseUrl}}/customers
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "name": "John Dorian, MD",
+    "role": "Resident",
+    "email": "john@dorian.md",
+    "phone": "(532)746-3955",
+    "contacted": true
+  }
 }
