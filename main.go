@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
@@ -12,13 +14,43 @@ type Customer struct {
 	Name      string `json:"name,omitempty"`
 	Role      string `json:"role,omitempty"`
 	Email     string `json:"email,omitempty"`
-	Phone     int    `json:"phone,omitempty"`
+	Phone     string `json:"phone,omitempty"`
 	Contacted bool   `json:"contacted,omitempty"`
+}
+
+// Customer database
+var customerList = []Customer{
+	{
+		ID:        "e1827a7d-1acd-46ef-9d92-2a4d78bd7669",
+		Name:      "Clementina DuBuque",
+		Role:      "CEO",
+		Email:     "Rey.Padberg@karina.biz",
+		Phone:     "024-648-3804",
+		Contacted: true,
+	},
+	{
+		ID:        "e1827a7d-1acd-46ef-9d92-2a4d78bd7669",
+		Name:      "Glenna Reichert",
+		Role:      "Software Engineer",
+		Email:     "Chaim_McDermott@dana.io",
+		Phone:     "(775)976-6794 x41206",
+		Contacted: false,
+	},
+	{
+		ID:        uuid.New().String(),
+		Name:      "Nicholas Runolfsdottir V",
+		Role:      "Security Analyst",
+		Email:     "Sherwood@rosamond.me",
+		Phone:     "586.493.6943 x140",
+		Contacted: true,
+	},
 }
 
 func getCustomers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(customerList)
 }
 
 func addCustomer(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +74,7 @@ func deleteCustomer(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
 	router := mux.NewRouter()
 	router.HandleFunc("/customers", getCustomers).Methods("GET")
 	router.HandleFunc("/customers", addCustomer).Methods("POST")
