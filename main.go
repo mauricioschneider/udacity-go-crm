@@ -14,6 +14,8 @@ type ErrorResponse struct {
 	Error string `json:"error"`
 }
 
+var emptyJSON interface{}
+
 type Customer struct {
 	ID        string `json:"id,omitempty"`
 	Name      string `json:"name,omitempty"`
@@ -98,7 +100,10 @@ func getCustomer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	emptyResponse, _ := json.Marshal(emptyJSON)
 	w.WriteHeader(http.StatusNotFound)
+	w.Write(emptyResponse)
+
 }
 
 func updateCustomer(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +129,9 @@ func updateCustomer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	emptyResponse, _ := json.Marshal(emptyJSON)
 	w.WriteHeader(http.StatusNotFound)
+	w.Write(emptyResponse)
 }
 
 func deleteCustomer(w http.ResponseWriter, r *http.Request) {
@@ -138,7 +145,9 @@ func deleteCustomer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	emptyResponse, _ := json.Marshal(emptyJSON)
 	w.WriteHeader(http.StatusNotFound)
+	w.Write(emptyResponse)
 }
 
 func showAPIDocumentation(w http.ResponseWriter, r *http.Request) {
